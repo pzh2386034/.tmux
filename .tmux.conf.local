@@ -387,3 +387,20 @@ tmux_conf_update_plugins_on_reload=true
 #
 # "$@"
 # # /!\ do not remove the previous line
+
+#bind c-h resize-pane -L 5
+#bind c-j resize-pane -D 5
+#bind c-k resize-pane -U 5
+#bind c-l resize-pane -R 5
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+bind C-] run " tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
+bind C-[ run " tmux save-buffer - | xclip -i -sel clipboard"
+#set -g default-command /bin/zsh
+#set -g default-shell /bin/zsh
+#bind L pipe-pane -o "cat >>~/#W.log" \; display "Toggled logging to ~/#W.log"
+set-window-option -g mode-keys vi
+set-window-option -g utf8 on
+ 
