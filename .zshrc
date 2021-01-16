@@ -8,7 +8,7 @@ fi
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-ANTIGEN="$HOME/wks/antigen/antigen.zsh"
+ANTIGEN="$HOME/tools/antigen/antigen.zsh"
 
 source "$ANTIGEN"
 antigen use prezto
@@ -42,10 +42,10 @@ bindkey '^P' history-search-backward
 bindkey '^N' history-search-forward
 bindkey '^h' backward-delete-char
 bindkey '^j' backward-kill-word
-bindkey '\eh' backward-char
-bindkey '\el' forward-char
-bindkey '\ej' backward-word
-bindkey '\ek' forward-word
+bindkey '^g' backward-char
+bindkey '^f' forward-char
+bindkey '^[' backward-word
+bindkey '^]' forward-word
 
 
 
@@ -54,7 +54,6 @@ hash -d bmc=$HOME/wks/openbmc
 
 # 不以空格开头的命令记录到历史中
 setopt hist_ignore_space
-alias cd=" cd"
-alias ls=" ls"
 
 antigen apply
+#source /usr/local/opt/powerlevel10k/powerlevel10k.zsh-theme
