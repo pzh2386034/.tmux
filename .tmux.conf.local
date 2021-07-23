@@ -383,11 +383,13 @@ bind-key C-a send-prefix # c-a c-a to send c-a
 
 #### plugin
 # List of plugins
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-fpp'
-set -g @plugin 'tmux-plugins/tmux-open'
-set -g @plugin 'tmux-plugins/tmux-urlview'
+#set -g @plugin 'tmux-plugins/tmux-sensible'
+#set -g @plugin 'tmux-plugins/tmux-resurrect'
+#set -g @plugin 'tmux-plugins/tmux-fpp'
+#set -g @plugin 'tmux-plugins/tmux-open'
+#set -g @plugin 'tmux-plugins/tmux-urlview'
+set -g @open-S 'https://www.google.com/search?q='
+
 
 #
 # # Other examples:
@@ -399,3 +401,15 @@ set -g @plugin 'tmux-plugins/tmux-urlview'
 # # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 # git clone https://github.com/tmux-plugins/tmux-open ~/.tmux/plugins/tmux-open
 # run ~/.tmux/plugins/tmux-open/open.tmux
+# git clone https://github.com/tmux-plugins/tmux-resurrect ~/.tmux/plugins/tmux-resurrect
+### run-shell ~/.tmux/plugins/tmux-resurrect/resurrect.tmux
+# git clone https://github.com/tmux-plugins/tmux-continuum  ~/.tmux/plugins/tmux-continuum
+# run-shell ~/.tmux/plugins/tmux-continuum/continuum.tmux
+# git clone https://github.com/tmux-plugins/tmux-logging ~/.tmux/plugins/tmux-logging
+# brew install ansifilter
+### run-shell ~/.tmux/plugins/tmux-logging/logging.tmux
+# git clone https://github.com/tmux-plugins/tmux-open ~/.tmux/plugins/tmux-open
+### run-shell ~/.tmux/plugins/tmux-open/open.tmux
+# brew install urlview && brew install extract_url
+# git clone https://github.com/tmux-plugins/tmux-urlview ~/.tmux/plugins/tmux-urlview
+### run-shell ~/.tmux/plugins/tmux-urlview/urlview.tmux

@@ -48,54 +48,6 @@ Development][bhtmux2] by [@bphogan].
 [bhtmux2]: https://pragprog.com/book/bhtmux2/tmux-2
 [@bphogan]: https://twitter.com/bphogan
 
-Troubleshooting
----------------
-
- - **I'm running tmux `HEAD` and things don't work properly. What should I do?**
-
-   Please open an issue describing what doesn't work with upcoming tmux. I'll do
-   my best to address it.
-
- - **Status line is broken and/or gets duplicated at the bottom of the screen.
-   What gives?**
-
-   This particularly happens on Linux when the distribution provides a version
-   of glib that received Unicode 9.0 upgrades (glib `>= 2.50.1`) while providing
-   a version of glibc that didn't (glibc `< 2.26`). You may also configure
-   `LC_CTYPE` to use an `UTF-8` locale. Typically VTE based terminal emulators
-   rely on glib's `g_unichar_iswide()` function while tmux relies on glibc's
-   `wcwidth()` function. When these two functions disagree, display gets messed
-   up.
-
-   This can also happen on macOS when using iTerm2 and "Use Unicode version 9
-   character widths" is enabled in `Preferences... > Profiles > Text`
-
-   For that reason, the default `~/.tmux.conf.local` file stopped using Unicode
-   characters for which width changed in between Unicode 8.0 and 9.0 standards,
-   as well as Emojis.
-
- - **I installed Powerline and/or (patched) fonts but can't see Powerline
-   symbols.**
-
-   First, you don't need to install Powerline. You only need fonts patched with
-   Powerline symbols or the standalone `PowerlineSymbols.otf` font. Then make
-   sure your `~/.tmux.conf.local` copy uses the right code points for
-   `tmux_conf_theme_left_separator_XXX` values.
-
- - **I'm using Bash On Windows (WSL), colors and Powerline look are broken.**
-
-   There is currently a [bug][1681] in the new console powering Bash On Windows
-   preventing text attributes (bold, underscore, ...) to combine properly with
-   colors. The workaround is to search your `~/.tmux.conf.local` copy and
-   replace attributes with `'none'`.
-
-   Also, until Window's console replaces its GDI based render with a DirectWrite
-   one, Powerline symbols will be broken.
-
-   The alternative is to use the [Mintty terminal for WSL][wsltty].
-
-[1681]: https://github.com/Microsoft/BashOnWindows/issues/1681
-[wsltty]: https://github.com/mintty/wsltty
 
 Features
 --------
@@ -183,167 +135,17 @@ This configuration uses the following bindings:
 
 Additionally, `copy-mode-vi` matches [my own Vim configuration][]
 
-[my own Vim configuration]: https://github.com/gpakosz/.vim.git
+ - `<prefix> o` open highlight word file with open
+ - `<prefix> C-o` open a highlighted selection with the $EDITOR
+ - `<prefix> Shift-s` search the highlighted selection directly inside a search engine (defaults to google).
 
-Bindings for `copy-mode-vi`:
+ - `<prefix> u` listing all urls on bottom pane(require urlview, extract\_url)
 
-- `v` begins selection / visual mode
-- `C-v` toggles between blockwise visual mode and visual mode
-- `H` jumps to the start of line
-- `L` jumps to the end of line
-- `y` copies the selection to the top paste-buffer
-- `Escape` cancels the current operation
+ - `<prefix> C-s` save
+ - `<prefix> C-r` restore
 
-Configuration
--------------
+ - `<prefix> Shift-p` Toggle (start/stop) logging in the current pane.
+ - `<prefix> alt-p` Save visible text, in the current pane. Equivalent of a "textual screenshot".
+ - `<prefix> alt-shift-p` Save complete pane history to a file.
+ - `<prefix> alt-c` Clear pane history
 
-While this configuration tries to bring sane default settings, you may want to
-customize it further to your needs. Instead of altering the `~/.tmux.conf` file
-and diverging from upstream, the proper way is to edit the `~/.tmux.conf.local`
-file.
-
-Please refer to the sample `.tmux.conf.local` file to know more about variables
-you can adjust to alter different behaviors. Pressing `<prefix> e` will open
-`~/.tmux.conf.local` with the editor defined by the `$EDITOR` environment
-variable (defaults to `vim` when empty).
-
-### Enabling the Powerline look
-
-Powerline originated as a status-line plugin for Vim. Its popular eye-catching
-look is based on the use of special symbols: <img width="80" alt="Powerline Symbols" style="vertical-align: middle;" src="https://cloud.githubusercontent.com/assets/553208/10687156/1b76dda6-796b-11e5-83a1-1634337c4571.png" />
-
-To make use of these symbols, there are several options:
-
-- use a font that already bundles those: this is e.g. the case of the
-  [2.030R-ro/1.050R-it version][source code pro] of the Source Code Pro font
-- use a [pre-patched font][powerline patched fonts]
-- use your preferred font along with the [Powerline font][powerline font] (that
-  only contains the Powerline symbols): [this highly depends on your operating
-  system and your terminal emulator][terminal support], for instance here's a
-  screenshot of iTerm2 configured to use `PowerlineSymbols.otf`
-  ![iTerm2 + Powerline font](https://user-images.githubusercontent.com/553208/62243890-8232f500-b3de-11e9-9b8c-51a5d38bdaa8.png)
-
-[source code pro]: https://github.com/adobe-fonts/source-code-pro/releases/tag/2.030R-ro/1.050R-it
-[powerline patched fonts]: https://github.com/powerline/fonts
-[powerline font]: https://github.com/powerline/powerline/raw/develop/font/PowerlineSymbols.otf
-[terminal support]: http://powerline.readthedocs.io/en/master/usage.html#usage-terminal-emulators
-[Powerline manual]: http://powerline.readthedocs.org/en/latest/installation.html#fonts-installation
-
-Please see the [Powerline manual] for further details.
-
-Then edit your `~/.tmux.conf.local` copy (with `<prefix> e`) and adjust the
-following variables:
-
-```
-tmux_conf_theme_left_separator_main='\uE0B0'
-tmux_conf_theme_left_separator_sub='\uE0B1'
-tmux_conf_theme_right_separator_main='\uE0B2'
-tmux_conf_theme_right_separator_sub='\uE0B3'
-```
-### Configuring the status line
-
-Contrary to the first iterations of this configuration, by now you have total
-control on the content and order of `status-left` and `status-right`.
-
-Edit your `~/.tmux.conf.local` copy (`<prefix> e`) and adjust the
-`tmux_conf_theme_status_left` and `tmux_conf_theme_status_right` variables to
-your own preferences.
-
-This configuration supports the following builtin variables:
-
- - `#{battery_bar}`: horizontal battery charge bar
- - `#{battery_percentage}`: battery percentage
- - `#{battery_status}`: is battery charging or discharging?
- - `#{battery_vbar}`: vertical battery charge bar
- - `#{circled_session_name}`: circled session number, up to 20
- - `#{hostname}`: SSH/Mosh aware hostname information
- - `#{hostname_ssh}`: SSH/Mosh aware hostname information, blank when not
-   connected to a remote server through SSH/Mosh
- - `#{loadavg}`: load average
- - `#{pairing}`: is session attached to more than one client?
- - `#{prefix}`: is prefix being depressed?
- - `#{root}`: is current user root?
- - `#{synchronized}`: are the panes synchronized?
- - `#{uptime_y}`: uptime years
- - `#{uptime_d}`: uptime days, modulo 365 when `#{uptime_y}` is used
- - `#{uptime_h}`: uptime hours
- - `#{uptime_m}`: uptime minutes
- - `#{uptime_s}`: uptime seconds
- - `#{username}`: SSH/Mosh aware username information
- - `#{username_ssh}`: SSH aware username information, blank when not connected
-   to a remote server through SSH/Mosh
-
-Beside custom variables mentioned above, the `tmux_conf_theme_status_left` and
-`tmux_conf_theme_status_right` variables support usual tmux syntax, e.g. using
-`#()` to call an external command that inserts weather information provided by
-[wttr.in]:
-```
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} #(curl -m 1 wttr.in?format=3 2>/dev/null; sleep 900) , %R , %d %b | #{username}#{root} | #{hostname} '
-```
-The `sleep 900` call makes sure the network request is issued at most every 15
-minutes whatever the value of `status-interval`.
-
-![Weather information from wttr.in](https://user-images.githubusercontent.com/553208/52175490-07797c00-27a5-11e9-9fb6-42eec4fe4188.png)
-
-[wttr.in]: https://github.com/chubin/wttr.in#one-line-output
-
-💡 You can also define your own custom variables. See the sample
-`.tmux.conf.local` file for instructions.
-
-Finally, remember `tmux_conf_theme_status_left` and
-`tmux_conf_theme_status_right` end up being given to tmux as `status-left` and
-`status-right` which means they're passed through `strftime()`. As such, the `%`
-character has a special meaning and needs to be escaped by doubling it, e.g.
-```
-tmux_conf_theme_status_right='#(echo foo %% bar)'
-```
-See `man 3 strftime`.
-
-### Accessing the macOS clipboard from within tmux sessions
-
-[Chris Johnsen created the `reattach-to-user-namespace`
-utility][reattach-to-user-namespace] that makes `pbcopy` and `pbpaste` work
-again within tmux.
-
-To install `reattach-to-user-namespace`, use either [MacPorts][] or
-[Homebrew][]:
-
-    $ port install tmux-pasteboard
-
-or
-
-    $ brew install reattach-to-user-namespace
-
-Once installed, `reattach-to-usernamespace` will be automatically detected.
-
-[MacPorts]: http://www.macports.org/
-[Homebrew]: http://brew.sh/
-
-### Using the configuration under Cygwin within Mintty
-
-**I don't recommend running this configuration with Cygwin anymore. Forking
-under Cygwin is extremely slow and this configuration issues a lot of
-`run-shell` commands under the hood. As such, you will experience high CPU
-usage. As an alternative consider using [Mintty terminal for WSL][wsltty].**
-
-![cygwin](https://cloud.githubusercontent.com/assets/553208/19741789/67a3f3d8-9bc2-11e6-9ecc-499fc0228ee6.png)
-
-It is possible to use this configuration under Cygwin within Mintty, however
-support for Unicode symbols and emojis lacks behind Mac and Linux.
-
-Particularly, Mintty's text rendering is implemented with GDI which has
-limitations:
-
-- color emojis are only available through DirectWrite starting with Windows 8.1
-- display of double width symbols, like the battery discharging symbol indicator
-  (U+1F50B) is buggy
-
-To get Unicode symbols displayed properly, you have to use [font linking].
-Open `regedit.exe` then navigate to the registry key at
-`HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\FontLink\SystemLink`
-and add a new entry for you preferred font to link it with the Segoe UI Symbol
-font.
-
-![regedit](https://cloud.githubusercontent.com/assets/553208/19741304/71a2f3ae-9bc0-11e6-96aa-4c09a812c313.png)
-
-[font linking]: https://msdn.microsoft.com/en-us/goglobal/bb688134.aspx
