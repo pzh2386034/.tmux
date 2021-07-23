@@ -389,6 +389,7 @@ bind-key C-a send-prefix # c-a c-a to send c-a
 #set -g @plugin 'tmux-plugins/tmux-open'
 #set -g @plugin 'tmux-plugins/tmux-urlview'
 set -g @open-S 'https://www.google.com/search?q='
+set -g @open-D 'https://www.duckduckgo.com/'
 
 
 #

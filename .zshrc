@@ -53,6 +53,7 @@ setopt auto_pushd
 hash -d bmc=$HOME/wks/openbmc
 hash -d tri=/Volumes/workdir/openbmc-2600-202003023/openbmc-master/build/tririvers
 hash -d star=/Volumes/workdir/openbmc-2600-202003023/openbmc-master/build/starlake
+hash -d old=/Volumes/workdir/openbmc/build/starlake
 
 # 不以空格开头的命令记录到历史中
 setopt hist_ignore_space
@@ -62,5 +63,6 @@ antigen apply
 alias obmc='docker run --rm -it -v myvolume:/workdir -v /Users/pan/wks:/opt zeuspan/obmc-compile:v2'
 alias onet='sudo ifconfig lo0 127.0.0.2 alias up;docker start sam'
 alias qemu='f() { qemu-system-arm -m 256 -M romulus-bmc -nographic -drive file=$1,format=raw,if=mtd -net nic -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu };f'
+alias qemu2600='f() { qemu-system-arm -m 256 -M ast2600-evb -nographic -drive file=$1,format=raw,if=mtd -net nic -net user,hostfwd=:127.0.0.1:2222-:22,hostfwd=:127.0.0.1:2443-:443,hostname=qemu };f'
 alias example='f() { echo Your arg was $1. };f'
 alias nmap_bmc='f() { nmap -sn 192.168.1.0/24 }; f'
